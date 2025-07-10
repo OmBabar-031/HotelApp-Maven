@@ -1,79 +1,89 @@
 
-# 🏨 Hotel Management Console App
 
-A simple console-based **Hotel Management System** built using **Java** and **Maven**, designed to simulate hotel room booking and administration without the use of JDBC or a database.
+🏨 Hotel Management Console App
 
----
+A simple console-based Hotel Management System built using Java and Maven, designed to simulate hotel room booking and administration. Supports file handling and optionally PostgreSQL database with JDBC.
 
-## 📌 Features
-
-- 👥 User login system (Admin & Customer roles)
-- 📖 View room status
-- 🛏️ Book room (thread-safe with concurrency handling)
-- ❌ Vacate room (admin only)
-- 💾 Data saved/loaded using plain text files
-- 🧵 Multithreading for simulating real-time booking
 
 ---
 
-## 💡 Technologies Used
+📌 Features
 
-- Java (JDK 8+)
-- Maven (for project structure & build)
-- File Handling (`.txt` for users and bookings)
-- Multithreading
-- No external libraries or database required
+👥 User login system (Admin & Customer roles)
 
----
+📖 View room status
 
-## 📂 Folder Structure
+🛏️ Book room (thread-safe with concurrency handling)
 
-```
-HotelApp-Maven/
-├── pom.xml                         # Maven config file
-└── src/
-    └── main/
-        └── java/
-            └── FullHotelAppWithoutJDBC.java  # Main class
-├── users.txt                       # User login data (admin, customers)
-├── bookings.txt                    # Auto-generated room booking status
-```
+❌ Vacate room (admin only)
+
+💾 Data saved/loaded using plain text files or PostgreSQL
+
+🧵 Multithreading for simulating real-time booking
+
+
 
 ---
 
-## 🧪 Sample Login Credentials
+💡 Technologies Used
 
-Create a file named `users.txt` in the root folder:
+Java (JDK 8+)
 
-```
-admin,admin123,admin
-john,1234,customer
-alice,abcd,customer
-```
+Maven (for project structure & build)
 
----
+File Handling (.txt for users and bookings)
 
-## 🚀 How to Run
+JDBC (PostgreSQL database) – optional
 
-### 🖥️ Prerequisites
+Multithreading
 
-- Java 8 or higher installed
-- [Apache Maven](https://maven.apache.org/download.cgi) installed
-- Git installed (optional, for pushing to GitHub)
+
 
 ---
 
-### 🔧 Run using Command Line
+🛢️ Database Integration (Optional)
 
-```bash
-cd HotelApp-Maven
-mvn compile
-mvn exec:java
-```
+To use PostgreSQL instead of text files, create a class named DBConnection.java:
 
-If `exec:java` fails, make sure this is in your `pom.xml`:
+// DBConnection.java
+import java.sql.*;
 
-```xml
+public class DBConnection {
+    public static Connection getConnection() {
+        try {
+            String url = "jdbc:postgresql://localhost:5432/hotel_db";
+            String user = "postgres";
+            String password = "your_password";
+            return DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+
+
+
+
+
+CREATE DATABASE hotel_db;
+
+
+---
+
+📦 Maven Dependency for PostgreSQL
+
+Add the following to your pom.xml:
+
+<dependencies>
+  <!-- PostgreSQL JDBC Driver -->
+  <dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.7.3</version>
+  </dependency>
+</dependencies>
+
 <build>
   <plugins>
     <plugin>
@@ -81,36 +91,96 @@ If `exec:java` fails, make sure this is in your `pom.xml`:
       <artifactId>exec-maven-plugin</artifactId>
       <version>3.1.0</version>
       <configuration>
-        <mainClass>FullHotelAppWithoutJDBC</mainClass>
+        <mainClass>FullHotelAppWithoutJDBC</mainClass> <!-- or your main class -->
       </configuration>
     </plugin>
   </plugins>
 </build>
-```
+
 
 ---
 
-## 📝 Notes
+📂 Folder Structure
 
-- Data is saved in `bookings.txt` when you exit the app.
-- Admin can **vacate** any room; customer can only **book**.
-- Multithreading used for safe concurrent booking simulation.
+HotelApp-Maven/
+├── pom.xml                         # Maven config file
+└── src/
+    └── main/
+        └── java/
+            ├── FullHotelAppWithoutJDBC.java  # Main class (file-based version)
+            └── DBConnection.java             # JDBC connection class
+├── users.txt                       # User login data (for file-based version)
+├── bookings.txt                    # Auto-generated room booking status
 
----
-
-## 📷 Screenshots
-
-_(Optional – Add CLI screenshots of your app running here)_
-
----
-
-## 👨‍💻 Author
-
-**Abhijeet Jadhav**  
-GitHub: [@abhijeet0093](https://github.com/abhijeet0093)
 
 ---
 
-## ⭐ License
+🧪 Sample Login Credentials (File-based)
+
+Create a file named users.txt in the root folder:
+
+admin,admin123,admin
+john,1234,customer
+alice,abcd,customer
+
+
+---
+
+🔄 
+
+
+
+---
+
+🚀 How to Run
+
+🖥️ Prerequisites
+
+Java 8 or higher
+
+Apache Maven
+
+PostgreSQL (optional, for DB version)
+
+Git (optional)
+
+
+
+---
+
+🔧 Run using Command Line
+
+cd HotelApp-Maven
+mvn compile
+mvn exec:java
+
+
+---
+
+📝 Notes
+
+File-based data is saved in bookings.txt when the app exits.
+
+Admin can vacate any room; customer can only book.
+
+Thread-safe booking is implemented using Java concurrency tools.
+
+
+
+
+---
+
+👨‍💻 Author
+
+Abhijeet Jadhav
+Om Babar
+GitHub: @abhijeet0093
+
+
+---
+
+⭐ License
 
 This project is open-source and free to use for learning and academic purposes.
+
+
